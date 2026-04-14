@@ -1,0 +1,213 @@
+import turtle
+
+# КОНСТАНТЫ
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 700
+BACKGROUND_COLOR = "lightblue"
+
+TURTLE_SPEED = 0
+
+# Координаты облака
+CLOUD_COLOR = "white"
+CLOUD_COORDS = [
+    (0, 0, 40),
+    (-30, 10, 30),
+    (30, 10, 30),
+    (-50, -10, 25),
+    (50, -10, 25),
+    (0, -20, 35)
+]
+# Солнце
+SUN_RAY_COLOR = "orange"
+SUN_RAY_WIDTH = 6
+SUN_RAY_COUNT = 16
+SUN_RAY_ANGLE_STEP = 22.5
+SUN_RAY_LENGTH = 90
+SUN_CIRCLE_COLOR = "yellow"
+SUN_CIRCLE_RADIUS = 60
+# Трава
+GRASS_COLOR = "green"
+GRASS_BLADES_COUNT = 74
+GRASS_START_X = -350
+GRASS_START_Y = -300
+GRASS_X_STEP = 10
+GRASS_BASE_ANGLE = 75
+GRASS_ANGLE_VARIATION = 15
+GRASS_WIDTH_MAX = 4
+GRASS_LENGTH_BASE = 70
+GRASS_LENGTH_VARIATION = 30
+GRASS_STEP_LENGTH = 8
+GRASS_TURN_ANGLE = 5
+# Цветок
+FLOWER_STEM_COLOR = "darkgreen"
+FLOWER_STEM_WIDTH = 4
+FLOWER_STEM_LENGTH = 120
+FLOWER_STEM_ANGLE = 90
+FLOWER_PETAL_COLOR = "pink"
+FLOWER_PETAL_COUNT = 8
+FLOWER_PETAL_ANGLE_STEP = 45
+FLOWER_PETAL_RADIUS = 30
+FLOWER_PETAL_ARC = 180
+FLOWER_CENTER_COLOR = "yellow"
+FLOWER_CENTER_RADIUS = 20
+#цвета лепестоков
+
+# Сердечко
+HEART_COLOR = "red"
+HEART_HEADING = 140
+HEART_FORWARD = 62
+HEART_CIRCLE_RADIUS = -35
+HEART_CIRCLE_ANGLE = 200
+HEART_SECOND_HEADING = 60
+# Текст
+TEXT_MAIN = "С 8 Марта!"
+TEXT_MAIN_COLOR = "purple"
+TEXT_MAIN_FONT = ("Arial", 36, "bold")
+TEXT_MAIN_POS_X = 0
+TEXT_MAIN_POS_Y = 15
+
+TEXT_SUB = "Дорогие женщины!"
+TEXT_SUB_COLOR = "deeppink"
+TEXT_SUB_FONT = ("Arial", 20, "italic")
+TEXT_SUB_POS_Y = -30
+
+TEXT_FOOTER = "Пусть каждый день будет ярким!"
+TEXT_FOOTER_COLOR = "blue"
+TEXT_FOOTER_FONT = ("Arial", 14, "normal")
+TEXT_FOOTER_POS_Y = -60
+
+TEXT_ALIGN = "center"
+
+# НАСТРОЙКИ ЭКРАНА
+
+SCREEN = turtle.Screen()
+SCREEN.bgcolor(BACKGROUND_COLOR)
+SCREEN.setup(width=SCREEN_WIDTH, height=SCREEN_HEIGHT)
+
+T = turtle.Turtle()
+T.speed(TURTLE_SPEED)
+T.hideturtle()
+
+# ФУНКЦИИ
+def draw_cloud(offset_x, offset_y):
+    T.color(CLOUD_COLOR)
+    for x, y, r in CLOUD_COORDS:
+        T.penup()
+        T.goto(x + offset_x, y + offset_y - r)
+        T.pendown()
+        T.begin_fill()
+        T.circle(r)
+        T.end_fill()
+
+def draw_sun(x, y):
+    T.color(SUN_RAY_COLOR)
+    T.width(SUN_RAY_WIDTH)
+    for i in range(SUN_RAY_COUNT):
+        T.penup()
+        T.goto(x, y)
+        T.pendown()
+        T.setheading(i * SUN_RAY_ANGLE_STEP)
+        T.forward(SUN_RAY_LENGTH)
+
+    T.width(1)
+    T.penup()
+    T.goto(x - 22, y - 60)
+    T.pendown()
+    T.color(SUN_CIRCLE_COLOR)
+    T.begin_fill()
+    T.circle(SUN_CIRCLE_RADIUS)
+    T.end_fill()
+
+def draw_grass():
+    T.color(GRASS_COLOR)
+    for i in range(GRASS_BLADES_COUNT):
+        T.penup()
+        T.goto(GRASS_START_X + i * GRASS_X_STEP, GRASS_START_Y)
+        T.pendown()
+        direction = 1 if i % 2 == 0 else -1
+        T.setheading(GRASS_BASE_ANGLE + (i % 5) * GRASS_ANGLE_VARIATION)
+        T.width(GRASS_WIDTH_MAX - (i % 2))
+        grass_length = GRASS_LENGTH_BASE + (i % GRASS_LENGTH_VARIATION)
+        for _ in range(int(grass_length / GRASS_STEP_LENGTH)):
+            T.forward(GRASS_STEP_LENGTH)
+            T.left(GRASS_TURN_ANGLE * direction)
+    T.width(1)
+
+def draw_flower(x, y):
+    T.color(FLOWER_STEM_COLOR)
+    T.width(FLOWER_STEM_WIDTH)
+    T.penup()
+    T.goto(x, y - 120)
+    T.pendown()
+    T.setheading(FLOWER_STEM_ANGLE)
+    T.forward(FLOWER_STEM_LENGTH)
+
+    T.width(1)
+    T.color(FLOWER_PETAL_COLOR)
+    for i in range(FLOWER_PETAL_COUNT):
+        T.penup()
+        T.goto(x, y)
+        T.pendown()
+        T.setheading(i * FLOWER_PETAL_ANGLE_STEP)
+        T.begin_fill()
+        T.circle(FLOWER_PETAL_RADIUS, FLOWER_PETAL_ARC)
+        T.circle(FLOWER_PETAL_RADIUS, FLOWER_PETAL_ARC)
+        T.end_fill()
+
+    T.penup()
+    T.goto(x - 15, y - 15)
+    T.pendown()
+    T.color(FLOWER_CENTER_COLOR)
+    T.begin_fill()
+    T.circle(FLOWER_CENTER_RADIUS)
+    T.end_fill()
+
+def draw_heart(x, y):
+    T.penup()
+    T.goto(x, y)
+    T.pendown()
+    T.color(HEART_COLOR)
+    T.begin_fill()
+    T.setheading(HEART_HEADING)
+    T.forward(HEART_FORWARD)
+    T.circle(HEART_CIRCLE_RADIUS, HEART_CIRCLE_ANGLE)
+    T.setheading(HEART_SECOND_HEADING)
+    T.circle(HEART_CIRCLE_RADIUS, HEART_CIRCLE_ANGLE)
+    T.forward(HEART_FORWARD)
+    T.end_fill()
+
+def draw_text():
+    T.penup()
+    T.goto(TEXT_MAIN_POS_X, TEXT_MAIN_POS_Y)
+    T.pendown()
+    T.color(TEXT_MAIN_COLOR)
+    T.write(TEXT_MAIN, align=TEXT_ALIGN, font=TEXT_MAIN_FONT)
+
+    T.penup()
+    T.goto(TEXT_MAIN_POS_X, TEXT_SUB_POS_Y)
+    T.pendown()
+    T.color(TEXT_SUB_COLOR)
+    T.write(TEXT_SUB, align=TEXT_ALIGN, font=TEXT_SUB_FONT)
+
+    T.penup()
+    T.goto(TEXT_MAIN_POS_X, TEXT_FOOTER_POS_Y)
+    T.pendown()
+    T.color(TEXT_FOOTER_COLOR)
+    T.write(TEXT_FOOTER, align=TEXT_ALIGN, font=TEXT_FOOTER_FONT)
+
+def main():
+    draw_sun(300, 250)
+    draw_cloud(100, 280)
+    draw_cloud(-50, 200)
+    draw_cloud(-200, 280)
+    draw_grass()
+    draw_flower(0, -180)
+    draw_flower(200, -180)
+    draw_flower(-200, -180)
+    draw_heart(-300, -50)
+    draw_heart(300, -50)
+    draw_text()
+    turtle.done()
+
+if __name__ == "__main__":
+    main()
