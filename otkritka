@@ -43,7 +43,6 @@ FLOWER_STEM_COLOR = "darkgreen"
 FLOWER_STEM_WIDTH = 4
 FLOWER_STEM_LENGTH = 120
 FLOWER_STEM_ANGLE = 90
-FLOWER_PETAL_COLOR = "pink"
 FLOWER_PETAL_COUNT = 8
 FLOWER_PETAL_ANGLE_STEP = 45
 FLOWER_PETAL_RADIUS = 30
@@ -133,7 +132,7 @@ def draw_grass():
             T.left(GRASS_TURN_ANGLE * direction)
     T.width(1)
 
-def draw_flower(x, y):
+def draw_flower(x, y, petal_color):
     T.color(FLOWER_STEM_COLOR)
     T.width(FLOWER_STEM_WIDTH)
     T.penup()
@@ -143,7 +142,7 @@ def draw_flower(x, y):
     T.forward(FLOWER_STEM_LENGTH)
 
     T.width(1)
-    T.color(FLOWER_PETAL_COLOR)
+    T.color(petal_color)
     for i in range(FLOWER_PETAL_COUNT):
         T.penup()
         T.goto(x, y)
@@ -201,9 +200,9 @@ def main():
     draw_cloud(-50, 200)
     draw_cloud(-200, 280)
     draw_grass()
-    draw_flower(0, -180)
-    draw_flower(200, -180)
-    draw_flower(-200, -180)
+    draw_flower(0, -180, "pink")
+    draw_flower(200, -180, "cyan")
+    draw_flower(-200, -180, "violet")
     draw_heart(-300, -50)
     draw_heart(300, -50)
     draw_text()
