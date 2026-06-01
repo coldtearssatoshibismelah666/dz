@@ -81,6 +81,7 @@ class Werewolf(Monster):
             print("Превращается в оборотня")
         print(f"Оборотень получил {damage} урона, HP: {self.get_hp()}")
 
+
 class Weapon:
     def __init__(self, name):
         self.__name = name
@@ -88,39 +89,93 @@ class Weapon:
     def use(self, monster):
         pass
 
+
 class SilverSword(Weapon):
     def __init__(self):
         super().__init__("SS")
+
     def use(self, monster):
         damage = 30
-        print("аауу")
+        print("удар серебряным мечем")
         monster.take_damage(damage)
+
 
 class HolyWater(Weapon):
     def __init__(self):
         super().__init__("HW")
+
     def use(self, monster):
         damage = 20
-        print("эээ")
+        print("Брызги святой воды")
         monster.take_damage(damage)
+
 
 class CrossbowBolt(Weapon):
     def __init__(self):
         super().__init__("CB")
+
     def use(self, monster):
             damage = 25
-            print("ййй")
+            print("выстрел из арбалета")
             monster.take_damage(damage)
 
 
-weapons = [SilverSword(), HolyWater(), CrossbowBolt()]
-zombie = Zombie("Зомби")
-for w in weapons:
-    w.use(zombie)
+class Hunter:
+    def __init__(self, __name, __hp=100):
+        self.__name = __name
+        self.__hp = __hp
+        self.__weapons = []
+
+    def get_name(self):
+        return self.__name
+
+    def get_hp(self):
+        return self.__hp
+
+    def set_hp(self, value):
+        if value < 0:
+            self.__hp = 0
+
+    def add_weapon(self, weapon):
+        self.__weapons.append(weapon)
+
+    def show_inventory(self):
+        if not self.__weapons:
+            print("в инвентаре ничего нет")
+            return
+        print(f"содержимое инвентаря {self.__name}")
+        for i,
+    def attack(self, weapon_index, monster):
+        if weapon_index < 0 or weapon_index >= len(self.__weapons):
+            return
+        self.__weapons[weapon_index].use(monster)
+
+    def is_alive(self):
+        if self.__hp > 0:
+            return True
+        else:
+            return False
+
+hunter = Hunter("Хельсинг")
+print(f"Охотник {hunter.get_name()}, HP: {hunter.get_hp()}")
+
+hunter.add_weapon(CrossbowBolt())
+hunter.add_weapon(HolyWater())
+hunter.add_weapon(SilverSword())
+
+hunter.show_inventory()
 
 
+#1
+#m = Monster("Зомби", 100, 10)
+#m.show_status()
+#m.set_hp(-50)
+#m.show_status()
+#print(m.is_alive())
+
+#2
 #w = Werewolf("Werewolf")
-#w.take_damage(52)
+#w.take_damage(40)
 
 #g = Ghost("Ghost")
 #g.take_damage(20)
@@ -129,10 +184,10 @@ for w in weapons:
 #v.take_damage(30)
 
 #z = Zombie("Зомби")
-#z.take_damage(14)
+#z.take_damage(20)
 
-#m = Monster("Зомби", 100, 10)
-#m.show_status()
-#m.set_hp(-50)
-#m.show_status()
-#print(m.is_alive())
+#3
+#weapons = [SilverSword(), HolyWater(), CrossbowBolt()]
+#zombie = Zombie("Зомби")
+#for w in weapons:
+#    w.use(zombie)
