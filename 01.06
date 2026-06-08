@@ -121,7 +121,7 @@ class CrossbowBolt(Weapon):
 
 
 class Hunter:
-    def __init__(self, __name, __hp=300):
+    def __init__(self, __name, __hp=100):
         self.__name = __name
         self.__hp = __hp
         self.__weapons = []
@@ -157,6 +157,9 @@ class Hunter:
     def take_damage(self, damage):
         self.__hp -= damage
 
+
+import random
+
 def run_game():
     hunter = Hunter("Хельсинг")
     hunter.add_weapon(CrossbowBolt())
@@ -166,18 +169,21 @@ def run_game():
     monsters = [Zombie("Зомби"), Vampire("Дракула"), Ghost("Призрак"), Werewolf("Оборотень")]
 
     for monster in monsters:
-        print(f'Текущий  враг:{monster.get_name()}')
+        print(f'Текущий  враг: {monster.get_name()}')
 
         while monster.is_alive() and hunter.is_alive():
-            hunter.attack(2, monster)
+            weapon_index = random.randint(0, 2)
+            hunter.attack(weapon_index, monster)
             if monster.is_alive():
                 monster.attack_hunter(hunter)
 
             print(f'{hunter.get_name()} HP: {hunter.get_hp()}')
 
-            if not hunter.is_alive():
-                print("Охотник потерпел поражение")
-
+        if not hunter.is_alive():
+            print("Охотник потерпел поражение")
+            break
         print(f"{monster.get_name()} повержен")
-    print("Все монстры убиты, Победа!")
+    if not monster.is_alive():
+        print("Все монстры убиты, Победа!")
 run_game()
+
