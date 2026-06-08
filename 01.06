@@ -84,7 +84,7 @@ class Werewolf(Monster):
 
 class Weapon:
     def __init__(self, name):
-        self.__name = name
+        self.name = name
 
     def use(self, monster):
         pass
@@ -92,7 +92,7 @@ class Weapon:
 
 class SilverSword(Weapon):
     def __init__(self):
-        super().__init__("SS")
+        super().__init__("SilverSword")
 
     def use(self, monster):
         damage = 30
@@ -102,7 +102,7 @@ class SilverSword(Weapon):
 
 class HolyWater(Weapon):
     def __init__(self):
-        super().__init__("HW")
+        super().__init__("HolyWater")
 
     def use(self, monster):
         damage = 20
@@ -112,7 +112,7 @@ class HolyWater(Weapon):
 
 class CrossbowBolt(Weapon):
     def __init__(self):
-        super().__init__("CB")
+        super().__init__("CrossBow")
 
     def use(self, monster):
             damage = 25
@@ -121,7 +121,7 @@ class CrossbowBolt(Weapon):
 
 
 class Hunter:
-    def __init__(self, __name, __hp=100):
+    def __init__(self, __name, __hp=300):
         self.__name = __name
         self.__hp = __hp
         self.__weapons = []
@@ -140,11 +140,9 @@ class Hunter:
         self.__weapons.append(weapon)
 
     def show_inventory(self):
-        if not self.__weapons:
-            print("в инвентаре ничего нет")
-            return
-        print(f"содержимое инвентаря {self.__name}")
-        for i,
+        for i, weapon in enumerate(self.__weapons):
+            print(f"содержимое инвентаря: {i}. {self.__weapons[i].name}")
+
     def attack(self, weapon_index, monster):
         if weapon_index < 0 or weapon_index >= len(self.__weapons):
             return
@@ -156,38 +154,30 @@ class Hunter:
         else:
             return False
 
-hunter = Hunter("Хельсинг")
-print(f"Охотник {hunter.get_name()}, HP: {hunter.get_hp()}")
+    def take_damage(self, damage):
+        self.__hp -= damage
 
-hunter.add_weapon(CrossbowBolt())
-hunter.add_weapon(HolyWater())
-hunter.add_weapon(SilverSword())
+def run_game():
+    hunter = Hunter("Хельсинг")
+    hunter.add_weapon(CrossbowBolt())
+    hunter.add_weapon(HolyWater())
+    hunter.add_weapon(SilverSword())
 
-hunter.show_inventory()
+    monsters = [Zombie("Зомби"), Vampire("Дракула"), Ghost("Призрак"), Werewolf("Оборотень")]
 
+    for monster in monsters:
+        print(f'Текущий  враг:{monster.get_name()}')
 
-#1
-#m = Monster("Зомби", 100, 10)
-#m.show_status()
-#m.set_hp(-50)
-#m.show_status()
-#print(m.is_alive())
+        while monster.is_alive() and hunter.is_alive():
+            hunter.attack(2, monster)
+            if monster.is_alive():
+                monster.attack_hunter(hunter)
 
-#2
-#w = Werewolf("Werewolf")
-#w.take_damage(40)
+            print(f'{hunter.get_name()} HP: {hunter.get_hp()}')
 
-#g = Ghost("Ghost")
-#g.take_damage(20)
+            if not hunter.is_alive():
+                print("Охотник потерпел поражение")
 
-#v = Vampire("Дракула")
-#v.take_damage(30)
-
-#z = Zombie("Зомби")
-#z.take_damage(20)
-
-#3
-#weapons = [SilverSword(), HolyWater(), CrossbowBolt()]
-#zombie = Zombie("Зомби")
-#for w in weapons:
-#    w.use(zombie)
+        print(f"{monster.get_name()} повержен")
+    print("Все монстры убиты, Победа!")
+run_game()
